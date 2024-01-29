@@ -26,4 +26,4 @@ int main() {
 	string str1 = "aadbutsad", str2 = "sad";
 	cout << strStr(str1, str2);
 	return 0;
-};
+}
