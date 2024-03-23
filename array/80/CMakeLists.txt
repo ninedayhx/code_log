@@ -1,0 +1,1 @@
+add_executable(T80_1 T80_1.cpp)
