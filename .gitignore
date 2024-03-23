@@ -2,3 +2,5 @@
 /*/cmake-build-debug/
 /*/.clang-format
 /.idea
+/.vscode
+/cmake-build-debug
