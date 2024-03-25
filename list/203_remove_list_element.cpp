@@ -27,8 +27,7 @@ ListNode* removeElements(ListNode* head, int val) {
 			pNode = pNode->next;
 		}
 	}
-	// 此处记得要重新获取一下头节点，然后再进行delete
-	head = virtual_head->next;
+	// 被删除的节点需要进行delete,回收内存，防止内存泄露
 	delete virtual_head;
 	return head;
 }
