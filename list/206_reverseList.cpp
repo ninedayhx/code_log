@@ -51,7 +51,7 @@ public:
 		if (index < 0) return;
 		for (int i = 0; i < index; i++) {
 			// 如果链表为空，且index大于0，则不加这个判断会出错
-			if(p->next == nullptr) return;
+			if (p->next == nullptr) return;
 			p = p->next;
 			// 如果在遍历的过程中，没有在最后一个循环之前就遇到了空指针，说明index非法
 			// 如果是最后一个循环，则说明需要插入到链表尾端
@@ -88,6 +88,40 @@ public:
 		cout << endl;
 	}
 
+	void print_list(ListNode* head) {
+		ListNode *p = head;
+		while (p != nullptr) {
+			cout << p->val << ' ';
+			p = p->next;
+		}
+		cout << endl;
+	}
+
+	ListNode *reverseList(ListNode *head) {
+		ListNode *p = head;
+		ListNode *ph = head, *pp = nullptr, *ppp = nullptr;
+		while(head != nullptr){ // 注意加上以上判断条件，使得当输入空链表时能够返回正确结果
+			pp = p->next;
+			if(pp== nullptr)
+			{
+				// 更改虚拟头节点位置
+				virtual_head->next = ph;
+				return ph;
+			}
+			ppp = p->next->next;
+			pp->next = ph;
+			p->next = ppp;
+			ph = pp;
+		}
+		virtual_head->next = ph;
+		return head;
+	}
+
+	ListNode * getVirtualHead(){
+		return virtual_head;
+	}
+
+
 private:
 	int size;
 	ListNode *virtual_head;
@@ -105,7 +139,10 @@ private:
 
 int main() {
 	MyLinkedList *obj = new MyLinkedList();
-	obj->addAtIndex(1,0);
+	for (int i = 1; i < 6; i++) {
+		obj->addAtTail(i);
+	}
 	obj->print_list();
-	cout<<obj->get(0);
+	obj->print_list(obj->reverseList(obj->getVirtualHead()->next));
+	obj->print_list();
 }
