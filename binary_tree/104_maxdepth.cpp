@@ -5,6 +5,7 @@
 #include <string>
 #include <stack>
 #include <queue>
+#include <algorithm>
 
 using namespace std;
 
@@ -79,40 +80,61 @@ public:
 		}
 		return res;
 	}
-	int maxDepth_post(TreeNode* root) {
-		int maxD = 0;
-		int depth = 0;
-		stack<TreeNode *> st;
-		if(root == nullptr) return maxD;
-		st.push(root);
-		TreeNode * tmp;
-		while(!st.empty()){
-			while(root!=nullptr){
-				root = root->left;
-				depth++;
-				if(maxD<depth) maxD = depth;
-				st.push(root);
-			}
+
+	int maxDepthRes;
+	void preRecursion(TreeNode *root, int depth) { // 参数中，不能使用int & depth 否则进行回溯
+		maxDepthRes = maxDepthRes > depth ? maxDepthRes : depth;  	// 访问中
+		if (root->left) {										 	// 访问左
+			depth++;
+			preRecursion(root->left, depth); // 继续递归，把当前值传递
+			depth--;					     // 深度回溯，假装自己没有访问过左子树，以保证访问右子树时，深度不会累加
 		}
+		if (root->right) {											// 访问右
+			depth++;
+			preRecursion(root->right, depth);
+			depth--;
+		}
+		return ;
+	}
+
+	int maxDepth_preRecursion(TreeNode *root) {
+		maxDepthRes = 0;
+		if(!root) return 0;
+		preRecursion(root, 1);
+		return maxDepthRes;
 	}
 
 	/**
-	 * 层序遍历确定其最大深度
+	 * 后序遍历访问最大深度
 	 * @param root
 	 * @return
 	 */
-	int maxDepth_level(TreeNode* root) {
+	int maxDepth_postRecursion(TreeNode *root) {
+		if (root == nullptr) return 0;
+		int leftdepth = maxDepth_postRecursion(root->left);   // 访问左
+		int rightdepth = maxDepth_postRecursion(root->right); // 访问右
+		return 1 + max(leftdepth, rightdepth);    // 访问中
+	}
+
+
+	/**
+	 * 层序遍历确定其最大深度，通过迭代的方式
+	 * @param root
+	 * @return
+	 */
+	int maxDepth_level_iterate(TreeNode *root) {
 		int maxD = 0;
 		queue<TreeNode *> q;
-		if(root == nullptr) return maxD;
+		if (root == nullptr) return maxD;
 		q.push(root);
-		TreeNode * tmp;
-		while(!q.empty()){
+		TreeNode *tmp;
+		while (!q.empty()) {
 			int size = q.size();
-			for(int i= 0;i<size;i++){
-				tmp = q.front(); q.pop();
-				if(tmp->left) q.push(tmp->left);
-				if(tmp->right) q.push(tmp->right);
+			for (int i = 0; i < size; i++) {
+				tmp = q.front();
+				q.pop();
+				if (tmp->left) q.push(tmp->left);
+				if (tmp->right) q.push(tmp->right);
 			}
 			maxD++;
 		}
@@ -126,5 +148,5 @@ int main() {
 	string str, s;
 	getline(cin, str);
 	TreeNode *root = solver.preorderCreate(str);
-	cout<<solver.maxDepth_level(root);
+	cout << solver.maxDepth_level_iterate(root);
 }

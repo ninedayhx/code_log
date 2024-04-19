@@ -129,7 +129,7 @@ public:
 			if(!l&&!r) continue;
 			// 如果有一个是空节点，或者是两个不是空节点，但内容不同，返回false
 			if((!l||!r)||l->val!=r->val) return false;
-			// 成对入队列
+			// 两侧节点的子树对称入队列
 			q.push(l->left);
 			q.push(r->right);
 
