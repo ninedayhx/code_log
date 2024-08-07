@@ -1,6 +1,4 @@
-/*/.idea/
-/*/cmake-build-debug/
-/*/.clang-format
-/.idea
-/.vscode
-/cmake-build-debug
+.idea/
+.vscode/
+cmake-build-debug/
+vsc_build/
