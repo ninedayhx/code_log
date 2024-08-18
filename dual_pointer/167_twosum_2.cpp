@@ -9,7 +9,24 @@ class Solution
 public:
     vector<int> twoSum(vector<int> &numbers, int target)
     {
-        return {};
+        int first = 0, last = numbers.size() - 1;
+        while (first != last)
+        {
+            int sum = numbers[first] + numbers[last];
+            if (sum > target)
+            {
+                --last;
+            }
+            else if (sum < target)
+            {
+                ++first;
+            }
+            else
+            {
+                return {first + 1, last + 1};
+            }
+        }
+        return {-1, -1};
     }
 };
 
@@ -26,4 +43,5 @@ int main()
     }
     cin >> n;
     auto res = solver.twoSum(num, n);
+    cout << res[0] << "," << res[1] << endl;
 }
