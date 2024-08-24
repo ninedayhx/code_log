@@ -97,24 +97,20 @@ public:
 		cout << endl;
 	}
 
-	ListNode *reverseList(ListNode *head) {
-		ListNode *p = head;
-		ListNode *ph = head, *pp = nullptr, *ppp = nullptr;
-		while(head != nullptr){ // 注意加上以上判断条件，使得当输入空链表时能够返回正确结果
-			pp = p->next;
-			if(pp== nullptr)
-			{
-				// 更改虚拟头节点位置
-				virtual_head->next = ph;
-				return ph;
-			}
-			ppp = p->next->next;
-			pp->next = ph;
-			p->next = ppp;
-			ph = pp;
+	ListNode *reverseList(ListNode *head)
+	{
+		ListNode *node = head,
+				 *pre = nullptr,
+				 *next = nullptr;
+
+		while (node)
+		{
+			next = node->next;
+			node->next = pre;
+			pre = node;
+			node = next;
 		}
-		virtual_head->next = ph;
-		return head;
+		return pre;
 	}
 
 	ListNode * getVirtualHead(){
