@@ -28,6 +28,25 @@ int uniquePaths(int m, int n) {
 	return dp[m-1][n-1];
 }
 
+/**
+ * @brief 优化空间
+ *
+ * @param m
+ * @param n
+ * @return int
+ */
+int uniquePathsOptStorge(int m, int n)
+{
+	vector<int> dp(n, 1); // 在左 和上边界 均为1 ，所以优化初值为1
+	for (int i = 1; i < m; ++i)
+	{
+		for (int j = 1; j < n; ++j)
+		{
+			dp[j] += dp[j - 1];
+		}
+	}
+	return dp[n - 1];
+}
 
 int main() {
 	int m, n;
