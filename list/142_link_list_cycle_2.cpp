@@ -200,6 +200,44 @@ public:
 		return nullptr;
 	}
 
+	ListNode *detectCycle_doublepoints(ListNode *head)
+	{
+		if (!head || !head->next)
+			return nullptr;
+		ListNode *fast = head->next, *slow = head;
+		// 假设有环，起点到环的入口长度为a，fast指针走的比slow快，
+		// slow到达环的入口时，fast已经在环内了, fast走的比slow快
+		// 进入环后，fast一定能追上slow
+		while (fast != slow)
+		{
+			if (!fast || !fast->next)
+			{
+				return nullptr;
+			}
+			fast = fast->next->next;
+			slow = slow->next;
+		}
+		ListNode *node = head;
+		// 起点到环的入口长度为a
+		// 假设当fast追上 slow 时，slow从环的入口到相遇点走了b
+		// 相遇点到入口长度为c
+		// fast在环内走了n圈+b然后与slow相遇，也就是
+		// fast所走路程为 a + n*(b+c) +b
+		// slow所走的所有路程为 a+b
+		// fast是slow的两倍速度， 所以
+		// 2*(a+b) = a + n*（b+c）+b
+		// a = (n-1)b +n*c = (n-1)*(b+c) +c
+		// 也就是说，如果有一个指针从起点出发，到环的入口，slow指针也从相遇点出发，
+		// 最后会在入口相遇，指针走a步，而slow走n-1圈加c步，刚好到入口
+		// 注意如果fast指针不从head出发，则slow会慢一步，不会像之前所说的那样在入口相遇
+		while (node == slow->next)
+		{
+			node = node->next;
+			slow = slow->next;
+		}
+		return nullptr;
+	}
+
 	void print_list() {
 		ListNode *p = virtual_head;
 		while (p->next != nullptr) {
