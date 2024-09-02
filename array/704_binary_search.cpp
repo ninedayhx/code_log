@@ -1,3 +1,4 @@
+// tag: binary_search 二分查找
 #include <iostream>
 #include <vector>
 
