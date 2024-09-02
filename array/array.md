@@ -12,6 +12,23 @@
         if(num[m] <target) l = m+1; 
     }
     ```
+    如果有多个目标值，找最左边的目标值和找最右边的目标值
+    ```cpp
+    int l = 0, r = 0;
+    int ans = -1;
+    while(l<=r){
+        int m = (l+r)>>1;
+        if(num[m]==target){ 
+            ans = m;
+            // 找左边
+            r = m-1;
+            //
+            l = m+1;
+        }else if(num[m]>target) r = m-1;
+        else l = m+1;
+    }
+    return ans;
+    ```
 - 找不小于目标的第一个值，也就是找区间，找target处于数组中的最小区间的右值
     ```cpp
     int l = 0, r = n-1;
