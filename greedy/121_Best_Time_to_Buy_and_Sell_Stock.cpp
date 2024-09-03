@@ -9,7 +9,9 @@ int maxProfit(vector<int> &prices)
     int maxprof = 0;
     for (auto &p : prices)
     {
+        // 动态的维护最小代价
         cost = min(cost, p);
+        // 计算当前最小代价下的最大利益
         maxprof = max(maxprof, p - cost);
     }
     return maxprof;
