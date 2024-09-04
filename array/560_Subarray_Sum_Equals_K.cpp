@@ -1,4 +1,4 @@
-// tag: array 前缀表
+// tag: array 前缀表 subarray 子串
 // 滴滴提前批1面
 #include <bits/stdc++.h>
 
