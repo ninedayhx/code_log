@@ -50,6 +50,8 @@ void rotate_reverse(vector<int> &nums, int k)
  *        环形替换时的循环次数是选择最大公约数，结束条件是是否回到起点
  *        求取最大公约数的api 是__gcd(a,b)
  *        辗转相除法求取最大公约数
+ *        扩展：
+ *             最小公倍数是 (a*b)/gcd(a,b)
  * @param nums
  * @param k
  */
