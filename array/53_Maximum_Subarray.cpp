@@ -1,4 +1,4 @@
-// tag: array  动态规划
+// tag: array  动态规划 前缀和
 #include <bits/stdc++.h>
 
 using namespace std;
