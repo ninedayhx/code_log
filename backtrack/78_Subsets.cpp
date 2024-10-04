@@ -41,7 +41,7 @@ vector<vector<int>> subsets(vector<int> &nums)
  * 那么回溯，就表现在选择和不选择时，对path数组的维护过程，不选择时，path没有被更改，自然不需要
  * 进行回溯，当选择当前元素时，path元素被更改，自然需要进行回溯
  *
- * * 时间复杂度 ：与之前的全排列回溯一致，节点总数都是 e*n！,所以精确的时间复杂度为O(e*n！)
+ * * 时间复杂度 ：搜索过程是一颗满二叉树，节点总数是 2^n, 加上每次复制path的时间，共为O(n*2^n)
  * * 空间复杂度 ：显然是O(n)
  * @param nums
  * @return vector<vector<int>>
