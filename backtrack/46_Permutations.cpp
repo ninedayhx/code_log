@@ -1,81 +1,53 @@
-// tag: backtrack dfs
+// tag: backtrack dfs 回溯 排列型回溯
 #include <bits/stdc++.h>
 
 using namespace std;
 
-class Solution
+/**
+ * @brief 排列型回溯，其实就是从目标集中选取元素填入n个有序空格中，当填入第i个空格，则下一个问
+ * 题就缩减为从剩余未访问的元素中选取一个填入第i+1个空格，即
+ * dfs(i, set)->dfs(i+1, set-x)
+ * 即从set选取一个元素x填入第i个位置后，下一个子问题就变为，从set-x中选取一个元素填入第i+1个
+ * 位置，使用一个标记数组来表示剩余元素
+ * 所以dfs的参数有两个，一个是需要填入的位置i,一个是剩余元素集合，我们使用标记数组表示
+ * 所以dfs的结束条件为 当i>=n时，说明path已经被填满，将搜索结果填入ans中
+ * 
+ * * 时间复杂度计算，先画出搜索树，然后计算搜索树的每一层的节点数量，为 \sum A_n^m,然后可以严
+ * 格的计算出总节点数为 e*n！，再加上复制path所花的时间，总时间就是O(n*n!)
+ * 
+ * * 空间复杂度计算，除去结果用的空间，path和vis这个两个中间变量占用O(2n)
+ * 
+ * @param nums
+ * @return vector<vector<int>>
+ */
+vector<vector<int>> permute_dfs(vector<int> &nums)
 {
-private:
-    vector<int> vis = {};
-    vector<vector<int>> ans = {};
-    vector<int> sub = {};
+    int n = nums.size();
+    vector<vector<int>> ans;
+    vector<int> path(n);
+    vector<int> used(n, 0);
     /**
-     * @brief 深度优先搜索，递归版
-     *
-     * @param n 数组
-     * @param len 当前排列结果的长度 0-n
-     *            长度大于总长度，为结束条件
+     * @brief i 表示当前dfs需要填入path[i]位置，vis表示什么元素已经被访问过
      */
-    void dfs(vector<int> &n, int len)
+    auto dfs = [&](auto &&dfs, int i, vector<int> &vis)
     {
-        if (len > n.size())
-            return;
-        if (len == n.size())
-        { // 满了 把当前排列结果放到总结果里
-            ans.emplace_back(sub);
-        }
-        // 遍历一边
-        for (int i = 0; i < n.size(); ++i)
+        if (i >= n)
         {
-            if (vis[i] == 0) // 没有访问过
-            {
-                sub[len] = n[i];
-                vis[i] = 1;
-                dfs(n, len + 1);
-                vis[i] = 0; // 相当于回溯
-                sub[len] = -1;
-            }
-        }
-        return;
-    }
-
-    void backtrack(vector<int> &n, int unvis)
-    {
-        int len = n.size();
-        // 未访问位置到了数组尾部，说明完成了
-        if (unvis == len)
-        {
-            ans.push_back(n);
+            ans.emplace_back(path);
             return;
         }
-        // 遍历未访问过的
-        for (int i = unvis; i < len; ++i)
+        // 遍历所有未被访问过的集合元素
+        for (int j = 0; j < n && vis[j] == 0; ++j)
         {
-            // 交换第一个未访问过的和其他遍历的
-            swap(n[unvis], n[i]);
-            // 更新未访问过的
-            backtrack(n, unvis + 1);
-            // 回溯
-            swap(n[unvis], n[i]);
+            path[i] = nums[j];
+            vis[j] = 1;           // 标记当前位置,
+            dfs(dfs, i + 1, vis); // 然后进一步进行搜索
+            vis[j] = 0;           // 搜索完成后进行回溯，恢复现场
         }
-    }
-
-public:
-    vector<vector<int>> permute_dfs(vector<int> &nums)
-    {
-        int n = nums.size();
-        vis.resize(n, 0);
-        sub.resize(n, -1);
-        dfs(nums, 0);
-        return ans;
-    }
-
-    vector<vector<int>> permute_backtrack(vector<int> &nums)
-    {
-        backtrack(nums, 0);
-        return ans;
-    }
-};
+    };
+    dfs(dfs, 0, used);
+    return ans;
+}
 
 int main()
 {
@@ -88,8 +60,7 @@ int main()
         if (cin.get() == '\n')
             break;
     }
-    Solution s;
-    auto res = s.permute_backtrack(nums);
+    auto res = permute_dfs(nums);
     for (auto &v : res)
     {
         for (auto &i : v)
