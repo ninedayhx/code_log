@@ -22,47 +22,44 @@ struct cmp
 
 vector<vector<int>> merge(vector<vector<int>> &intervals)
 {
-    // sort(intervals.begin(), intervals.end(), cmp());
+    vector<vector<int>> ans;
+    int n = intervals.size();
     sort(intervals.begin(), intervals.end());
-
-    if (intervals.size() == 1)
+    int l = intervals[0][0], r = intervals[0][1];
+    for (int i = 1; i < n; ++i)
     {
-        return intervals;
-    }
-    vector<int> first(2, 0);
-    first = intervals[0];
-    vector<vector<int>> res;
-    for (int i = 1; i < intervals.size(); ++i)
-    {
-        if (first[1] >= intervals[i][0])
+        if (intervals[i - 1][1] >= intervals[i][0])
         {
-            first[0] = min(first[0], intervals[i][0]);
-            first[1] = max(first[1], intervals[i][1]);
+            l = intervals[i - 1][0];
+            r = max(intervals[i - 1][1], intervals[i][1]);
         }
         else
         {
-            res.emplace_back(first);
-            first = intervals[i];
+            vector<int> tmp = {l, r};
+            ans.emplace_back(tmp);
+            l = intervals[i][0];
+            r = max(intervals[i - 1][1], intervals[i][1]);
         }
     }
-    res.emplace_back(first);
-    return res;
+    vector<int> tmp = {l, r};
+    ans.emplace_back(tmp);
+    return ans;
 }
 
 int main()
 {
-    vector<vector<int>> intervals;
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; ++i)
+    vector<vector<int>> intervals = {{1, 4}, {0, 2}, {3, 5}};
+    // int n;
+    // cin >> n;
+    // for (int i = 0; i < n; ++i)
+    // {
+    //     int l, r;
+    //     cin >> l >> r;
+    //     intervals.emplace_back(l, r);
+    // }
+    auto ans = merge(intervals);
+    for (auto &v : ans)
     {
-        int l, r;
-        cin >> l >> r;
-        intervals.emplace_back(l, r);
-    }
-    auto merge(intervals);
-    for (auto &v : intervals)
-    {
-        cout << v[0] << v[1] << endl;
+        cout << v[0] << ", " << v[1] << endl;
     }
 }
