@@ -141,13 +141,49 @@ void quickSort_random_op(vector<int> &arr, int l, int r)
 }
 
 /**
- * @brief 归并排序
+ * @brief 归并排序:把arr均分为两段，然后继续递归分为两段，分完以后将两段进行线性归并
+ * * 空间复杂度： O(nlogn) 稳定
+ * * 时间复杂度： O(n)  使用了辅助数组
  * @param arr
  * @param l
  * @param r
  */
+vector<int> tmp;
 void mergeSort(vector<int> &arr, int l, int r)
 {
+    if (l >= r)
+        return;
+    int m = (l + r) >> 1;
+    // 分治递归
+    mergeSort(arr, l, m);
+    mergeSort(arr, m + 1, r);
+    // 两边合并
+    int i = l, j = m + 1, k = 0;
+    while (i <= l && j <= r)
+    {
+        if (arr[i] <= arr[j])
+        {
+            tmp[k++] = arr[i++];
+        }
+        else
+        {
+            tmp[k++] = arr[j++];
+        }
+    }
+    while (i <= m)
+    {
+        tmp[k++] = arr[i++];
+    }
+    while (j <= r)
+    {
+        tmp[k++] = arr[j++];
+    }
+
+    // 复制当前区间到arr
+    for (int a = 0; a < r - l + 1; ++a)
+    {
+        arr[l + a] = tmp[a];
+    }
 }
 
 vector<int> sortArray(vector<int> &nums)
